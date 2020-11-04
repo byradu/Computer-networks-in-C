@@ -53,6 +53,7 @@ int main()
     }
     else if (pid == 0)
     { //fiu
+        int logat = 0;
         while (1)
         {
 
@@ -84,7 +85,10 @@ int main()
                 char *raspuns = (char *)malloc(55);
 
                 if (gasit == 1)
+                {
                     strcpy(raspuns, green "Success!");
+                    logat = 1;
+                }
                 else
                     strcpy(raspuns, red "Wrong username");
 
@@ -97,36 +101,58 @@ int main()
             }
             else if (strstr(command, "mystat ") != NULL)
             {
-                char *rasp = mystat(command + strlen("mystat "));
-
-                if (write(sckt[1], rasp, 500) == -1)
+                if (logat != 1)
                 {
-                    perror(red "Writing error child..\n");
-                    exit(9);
+                    char rasp[500] = red"You have to login";
+                    if (write(sckt[1], rasp, 500) == -1)
+                    {
+                        perror(red "Writing error child..\n");
+                        exit(9);
+                    }
+                }
+                else
+                {
+                    char *rasp = mystat(command + strlen("mystat "));
+
+                    if (write(sckt[1], rasp, 500) == -1)
+                    {
+                        perror(red "Writing error child..\n");
+                        exit(9);
+                    }
                 }
             }
             else if (strstr(command, "myfind ") != NULL)
             {
+                if (logat != 1)
+                {
+                    char answ[1000] = red"You have to login\n";
+                     if (write(sckt[1], answ, 1000) == -1)
+                                {
+                                    perror(red "Writing error child..\n");
+                                    exit(30);
+                                }
+                }
+                else
+                {
+                    char *path = (char *)malloc(256);
+                    char *pattern = (char *)malloc(256);
+                    char *answ = (char *)malloc(1000);
+                    int errnum;
 
-                char *path = (char *)malloc(256);
-                char *pattern = (char *)malloc(256);
-                char *answ = (char *)malloc(1000);
-                int errnum;
-
-                if (strchr(command, '/') != NULL)
-                { //daca exista / inseamna ca avem un director si/sau un pattern/alt director
-                    int i = 0, lastChar = strlen(command + 7) - 1;
-                    while (strlen(command + 7) - i - 1 != 0)
-                    {
-                        if (command[7 + lastChar] == '/')
-                            break;
-                        lastChar--;
-                        i++;
-                    }
-                    char *testDirectory = (char*)malloc(256);
+                    if (strchr(command, '/') != NULL)
+                    { //daca exista / inseamna ca avem un director si/sau un pattern/alt director
+                        int i = 0, lastChar = strlen(command + 7) - 1;
+                        while (strlen(command + 7) - i - 1 != 0)
+                        {
+                            if (command[7 + lastChar] == '/')
+                                break;
+                            lastChar--;
+                            i++;
+                        }
+                        /* char *testDirectory = (char*)malloc(256);
                     strcpy(testDirectory,command+7);
                     DIR*dirz=opendir(testDirectory);
-                    /* if(dirz){
+                    if(dirz){
                         strcpy(pattern,"*");
                         strcpy(answ,myfind(testDirectory,pattern));
                         if (write(sckt[1], answ, 1000) == -1)
@@ -135,108 +161,109 @@ int main()
                                 exit(39);
                             }
                     } */
-                    if (lastChar == strlen(command + 7) - 1)
-                    {
-                        strncpy(path, command + 7, lastChar);
-                        DIR *dir = opendir(path);
-                        if (dir)
-                        { //daca e un director existent
-                            closedir(dir);
-                            strcpy(pattern, "*");
-                            strcpy(answ, myfind(path, pattern));
-                            if (write(sckt[1], answ, 1000) == -1)
-                            {
-                                perror(red "Writing error child..\n");
-                                exit(30);
-                            }
-                        }
-                        else if (ENOENT == errno)
-                        { //daca directorul e inexistent
-                            strcpy(answ, red "Wrong path");
-                            if (write(sckt[1], answ, 1000) == -1)
-                            {
-                                perror(red "Writing error child..\n");
-                                exit(31);
-                            }
-                        }
-                        else
+                        if (lastChar == strlen(command + 7) - 1)
                         {
-                            strcpy(answ, red "Something went wrong\n");
-                            if (write(sckt[1], answ, 1000) == -1)
-                            {
-                                perror(red "Writing error child..\n");
-                                exit(32);
-                            }
-                        }
-                    }
-                    else if (lastChar < strlen(command + 7) - 1)
-                    { //ex: myfind /home/radu
-                        strcpy(pattern, command + lastChar + 7 + 1);
-                        DIR *dir = opendir(pattern);
-                        if (dir)
-                        {
-                            closedir(dir);
-                            strcpy(path, command + 7);
-                            strcpy(pattern, "*");
-                            strcpy(answ, myfind(path, pattern));
-                            if (write(sckt[1], answ, 1000) == -1)
-                            {
-                                perror(red "Writing error child..\n");
-                                exit(33);
-                            }
-                        }
-                        else if (ENOENT == errno)
-                        { //nu e director e pattern
                             strncpy(path, command + 7, lastChar);
-                            //verificam daca path-ul exista
-                            DIR *dir2 = opendir(path);
-                            if (dir2)
-                            {
-                                closedir(dir2);
+                            DIR *dir = opendir(path);
+                            if (dir)
+                            { //daca e un director existent
+                                closedir(dir);
+                                strcpy(pattern, "*");
                                 strcpy(answ, myfind(path, pattern));
+                                if (write(sckt[1], answ, 1000) == -1)
+                                {
+                                    perror(red "Writing error child..\n");
+                                    exit(30);
+                                }
                             }
                             else if (ENOENT == errno)
-                            {
-                                strcpy(answ, red "Wrong path\n");
+                            { //daca directorul e inexistent
+                                strcpy(answ, red "Wrong path");
+                                if (write(sckt[1], answ, 1000) == -1)
+                                {
+                                    perror(red "Writing error child..\n");
+                                    exit(31);
+                                }
                             }
-                            if (write(sckt[1], answ, 1000) == -1)
+                            else
                             {
-                                perror(red "Writing error child..\n");
-                                exit(34);
+                                strcpy(answ, red "Something went wrong\n");
+                                if (write(sckt[1], answ, 1000) == -1)
+                                {
+                                    perror(red "Writing error child..\n");
+                                    exit(32);
+                                }
                             }
                         }
-                        else
-                        {
-                            strcpy(answ, red "Something went wrong\n");
-                            if (write(sckt[1], answ, 1000) == -1)
+                        else if (lastChar < strlen(command + 7) - 1)
+                        { //ex: myfind /home/radu
+                            strcpy(pattern, command + lastChar + 7 + 1);
+                            DIR *dir = opendir(pattern);
+                            if (dir)
                             {
-                                perror(red "Writing error child..\n");
-                                exit(35);
+                                closedir(dir);
+                                strcpy(path, command + 7);
+                                strcpy(pattern, "*");
+                                strcpy(answ, myfind(path, pattern));
+                                if (write(sckt[1], answ, 1000) == -1)
+                                {
+                                    perror(red "Writing error child..\n");
+                                    exit(33);
+                                }
                             }
-                        }
-                    }
-                }
-                else
-                { //se da direct pattern-ul
-                    char cwd[PATH_MAX];
-                    if (getcwd(cwd, sizeof(cwd)) != NULL)
-                    {
-                        strcpy(path, cwd);
-                        strcpy(pattern, command + 7);
-                        strcpy(answ, myfind(path, pattern));
-                        if (write(sckt[1], answ, 1000) == -1)
-                        {
-                            perror(red "Writing error child..\n");
-                            exit(36);
+                            else if (ENOENT == errno)
+                            { //nu e director e pattern
+                                strncpy(path, command + 7, lastChar);
+                                //verificam daca path-ul exista
+                                DIR *dir2 = opendir(path);
+                                if (dir2)
+                                {
+                                    closedir(dir2);
+                                    strcpy(answ, myfind(path, pattern));
+                                }
+                                else if (ENOENT == errno)
+                                {
+                                    strcpy(answ, red "Wrong path\n");
+                                }
+                                if (write(sckt[1], answ, 1000) == -1)
+                                {
+                                    perror(red "Writing error child..\n");
+                                    exit(34);
+                                }
+                            }
+                            else
+                            {
+                                strcpy(answ, red "Something went wrong\n");
+                                if (write(sckt[1], answ, 1000) == -1)
+                                {
+                                    perror(red "Writing error child..\n");
+                                    exit(35);
+                                }
+                            }
                         }
                     }
                     else
-                    { //avem eroare daca nu e director
-                        strcpy(answ, strerror(errnum));
-                        if (write(sckt[1], answ, 1000) == -1)
+                    { //se da direct pattern-ul
+                        char cwd[PATH_MAX];
+                        if (getcwd(cwd, sizeof(cwd)) != NULL)
                         {
-                            perror(red "Writing error child..\n");
-                            exit(37);
+                            strcpy(path, cwd);
+                            strcpy(pattern, command + 7);
+                            strcpy(answ, myfind(path, pattern));
+                            if (write(sckt[1], answ, 1000) == -1)
+                            {
+                                perror(red "Writing error child..\n");
+                                exit(36);
+                            }
+                        }
+                        else
+                        { //avem eroare daca nu e director
+                            strcpy(answ, strerror(errnum));
+                            if (write(sckt[1], answ, 1000) == -1)
+                            {
+                                perror(red "Writing error child..\n");
+                                exit(37);
+                            }
                         }
                     }
                 }
@@ -244,7 +271,7 @@ int main()
         }
     }
     else if (pid > 0)
-    {
+    {//parinte
         while (1)
         {
             sleep(1);
@@ -267,8 +294,7 @@ int main()
                 printf(green "Have a great day!\n");
                 break;
             }
-
-            if (strstr(command, "login : ") != NULL)
+            else if (strstr(command, "login : ") != NULL)
             {
                 char ans[55];
                 int rd = open("test", O_RDONLY);
@@ -281,8 +307,7 @@ int main()
 
                 close(rd);
             }
-
-            if (strstr(command, "mystat ") != NULL)
+            else if (strstr(command, "mystat ") != NULL)
             {
                 char *mystt = (char *)malloc(500);
                 if (read(sckt[0], mystt, 500) == -1)
@@ -292,8 +317,7 @@ int main()
                 }
                 printf("%s\n", mystt);
             }
-
-            if (strstr(command, "myfind ") != NULL)
+            else if (strstr(command, "myfind ") != NULL)
             {
                 char *answ = (char *)malloc(1000);
                 if (read(sckt[0], answ, 1000) == -1)
@@ -302,6 +326,10 @@ int main()
                     exit(40);
                 }
                 printf("%s", answ);
+            }
+            else
+            {
+                printf("%s", red "Wrong command! Try again\n");
             }
         }
     }
