@@ -1,0 +1,8 @@
+https://stackoverflow.com/questions/230062/whats-the-best-way-to-check-if-a-file-exists-in-c
+https://stackoverflow.com/questions/5141960/get-the-current-time-in-c
+https://stackoverflow.com/questions/3618889/how-to-find-a-current-day-in-c-language
+https://www.tutorialspoint.com/http/http_responses.htm
+https://stackoverflow.com/questions/238603/how-can-i-get-a-files-size-in-c
+https://stackoverflow.com/questions/14992772/modifying-string-literal-passed-in-as-a-function
+https://dev.opera.com/articles/http-basic-introduction/
+https://stackoverflow.com/questions/49547/how-do-we-control-web-page-caching-across-all-browsers
