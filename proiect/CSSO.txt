@@ -1,8 +1,0 @@
-4
-192.168.0.165
-rzr
-nightlovell
-PUT C:\windows\system32\calc.exe
-RUN calc.exe
-PUT C:\windows\system32\cmd.exe
-RUN cmd.exe
