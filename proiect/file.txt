@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis at delectus porro vitae iusto nisi reiciendis obcaecati tempore nobis harum? Voluptatem iure, sequi dolor et laborum ipsum sint non est.</p>
-    <h4>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat nulla ullam reprehenderit adipisci distinctio a impedit, sapiente veritatis iste omnis dolores! Dignissimos quibusdam praesentium incidunt ratione, itaque illum eum neque.</h4>
-    <h5>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit ipsa fugit magnam, deserunt quo, autem ex minus quos ullam numquam voluptatum culpa doloremque dolorum ab repudiandae temporibus. Reprehenderit, atque nam?</h5>
-     ipsum, dolor sit amet consectetur adipisicing elit. Odio laudantium blanditiis aut possimus, voluptates voluptatum officia. Nulla vitae ut, adipisci deserunt eveniet id magnam ipsam explicabo est vero nihil fugit!
+lipsum, dolor sit amet consectetur adipisicing elit. Odio laudantium blanditiis aut possimus, voluptates voluptatum officia. Nulla vitae ut, adipisci deserunt eveniet id magnam ipsam explicabo est vero nihil fugit!
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem eveniet enim blanditiis quos veritatis dolores totam excepturi quam sit dolor voluptatum quo, dignissimos reprehenderit, itaque culpa alias suscipit. Officiis, expedita.
     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum porro illum assumenda praesentium voluptatum nesciunt dignissimos accusamus, reiciendis ipsam exercitationem cumque rem quam adipisci temporibus reprehenderit eum similique culpa incidunt.
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque totam dolorem ad modi laboriosam, atque labore quos? A voluptatum pariatur, in officiis, debitis vel nostrum quos natus quod ab quasi?
@@ -18,7 +7,3 @@
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Id necessitatibus non doloremque provident nemo, fugit ut. Corrupti hic quam sit, consectetur non, molestiae est aliquam eveniet in id iste ipsa.
     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non ullam optio adipisci, sapiente inventore eaque dolores quam iste corporis! Culpa soluta vero maxime quibusdam et suscipit porro qui ipsum repellendus!
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic harum temporibus, atque, sunt et cum asperiores possimus ex molestiae necessitatibus dolores molestias doloribus eaque magni dolor voluptas reiciendis illum exercitationem?
-        <br><br>
-    <a href="index.html" style="font-size: xx-large;">go to index</a>
-</body>
-</html>
